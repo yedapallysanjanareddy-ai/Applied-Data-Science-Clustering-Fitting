@@ -34,4 +34,70 @@ for col in numeric_cols:
 
 # -----------------------------------------------------------
 # 3. Relational Plot (Scatter Plot)
-# ----------------------------------------------------
+# -----------------------------------------------------------
+
+plt.figure(figsize=(8, 5))
+sns.scatterplot(data=df, x="Average_Price_USD", y="Rating")
+plt.title("Rating vs Average Price")
+plt.xlabel("Average Price (USD)")
+plt.ylabel("Rating")
+plt.show()
+
+# -----------------------------------------------------------
+# 4. Categorical Plot (Bar Plot)
+# -----------------------------------------------------------
+
+plt.figure(figsize=(8, 5))
+sns.countplot(data=df, x="Continent")
+plt.title("Number of Restaurants per Continent")
+plt.xticks(rotation=45)
+plt.show()
+
+# -----------------------------------------------------------
+# 5. Statistical Plot (Correlation Heatmap)
+# -----------------------------------------------------------
+
+plt.figure(figsize=(10, 6))
+sns.heatmap(df.corr(numeric_only=True), annot=True, cmap="coolwarm")
+plt.title("Correlation Heatmap")
+plt.show()
+
+# -----------------------------------------------------------
+# 6. K-Means Clustering
+# -----------------------------------------------------------
+
+X = df[["Average_Price_USD", "Rating"]]
+
+kmeans = KMeans(n_clusters=3, random_state=42)
+df["Cluster"] = kmeans.fit_predict(X)
+
+plt.figure(figsize=(8, 5))
+sns.scatterplot(
+    data=df,
+    x="Average_Price_USD",
+    y="Rating",
+    hue="Cluster",
+    palette="Set2"
+)
+plt.title("K-Means Clustering (Price vs Rating)")
+plt.show()
+
+# -----------------------------------------------------------
+# 7. Linear Regression (Fitting)
+# -----------------------------------------------------------
+
+x = df["Years_Operating"].values.reshape(-1, 1)
+y = df["Rating"].values
+
+model = LinearRegression()
+model.fit(x, y)
+
+plt.figure(figsize=(8, 5))
+plt.scatter(df["Years_Operating"], df["Rating"])
+plt.plot(df["Years_Operating"], model.predict(x))
+plt.title("Linear Regression: Rating vs Years Operating")
+plt.xlabel("Years Operating")
+plt.ylabel("Rating")
+plt.show()
+
+print("\nAssignment Completed Successfully!")
